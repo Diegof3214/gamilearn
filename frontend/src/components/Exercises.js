@@ -131,31 +131,31 @@ export default function Exercises() {
         <pre style={styles.codeBlock}>{currentExercise.question}</pre>
       </div>
 
-      <div style={styles.optionsGrid}>
+      <div style={styles.optionsGrid} key={currentIndex}>
         {['a', 'b', 'c'].map((key) => {
             const upperKey = key.toUpperCase();
             const isSelected = selectedOption === upperKey;
             const isActualCorrect = currentExercise.correct_answer === upperKey;
             
-            // 1. Empezamos con el estilo base
+            // 1. Estilo base
             let btnStyle = {...styles.optionBtn};
 
-            // 2. Si estamos respondiendo (idle) y seleccioné este:
+            // 2. Estado "Seleccionado" (mientras piensas)
             if (feedbackState === "idle" && isSelected) {
                 btnStyle = {...btnStyle, ...styles.selected};
             }
 
-            // 3. Si YA respondimos (feedbackState no es idle):
+            // 3. Estado "Resultado" (ya respondiste)
             if (feedbackState !== "idle") {
-                // A. Si esta opción es la CORRECTA, se pone verde SIEMPRE
+                // A. La correcta SIEMPRE se ilumina en verde
                 if (isActualCorrect) {
                     btnStyle = {...btnStyle, ...styles.correct};
                 }
-                // B. Si yo elegí esta opción y era INCORRECTA, se pone roja
+                // B. Si te equivocaste, tu elección se pone roja
                 else if (isSelected && feedbackState === "incorrect") {
                     btnStyle = {...btnStyle, ...styles.incorrect};
                 }
-                // C. Si no es ni la mía ni la correcta, se queda normal (quizás un poco opaca)
+                // C. Las demás se opacan para no distraer
                 else {
                     btnStyle = {...btnStyle, opacity: 0.5};
                 }
