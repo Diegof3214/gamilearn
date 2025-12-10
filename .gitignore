@@ -1,0 +1,14 @@
+# Ignorar entorno virtual de Python
+venv/
+__pycache__/
+*.pyc
+
+# Ignorar dependencias de Node (React)
+node_modules/
+build/
+
+# Ignorar base de datos local
+*.sqlite3
+
+# Ignorar archivos de entorno (claves secretas)
+.env
