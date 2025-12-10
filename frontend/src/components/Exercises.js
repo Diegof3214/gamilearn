@@ -22,7 +22,6 @@ export default function Exercises() {
 
     api.get(endpoint)
       .then((res) => {
-        // Barajar ejercicios
         const shuffled = res.data.sort(() => Math.random() - 0.5);
         setExercises(shuffled);
       })
@@ -46,7 +45,6 @@ export default function Exercises() {
       } catch (error) {
         console.error("Error guardando progreso:", error);
       }
-
     } else {
       setFeedbackState("incorrect");
     }
@@ -76,7 +74,6 @@ export default function Exercises() {
 
   if (exercises.length === 0) return <div style={styles.container}>Cargando lección...</div>;
 
-  // --- PANTALLA FINAL ---
   if (isFinished) {
     return (
       <div style={styles.container}>
@@ -134,34 +131,41 @@ export default function Exercises() {
         <pre style={styles.codeBlock}>{currentExercise.question}</pre>
       </div>
 
-      {/* --- AQUÍ ESTÁ EL CAMBIO CLAVE --- */}
       <div style={styles.optionsGrid}>
         {['a', 'b', 'c'].map((key) => {
             const upperKey = key.toUpperCase();
             const isSelected = selectedOption === upperKey;
-            const isCorrectAnswer = currentExercise.correct_answer === upperKey;
+            const isActualCorrect = currentExercise.correct_answer === upperKey;
             
-            let optionStyle = styles.optionBtn;
-            
-            // Lógica de colores mejorada
-            if (isSelected) {
-                if (feedbackState === "correct") {
-                    optionStyle = {...styles.optionBtn, ...styles.correct};
-                } else if (feedbackState === "incorrect") {
-                    optionStyle = {...styles.optionBtn, ...styles.incorrect};
-                } else {
-                    optionStyle = {...styles.optionBtn, ...styles.selected};
+            // 1. Empezamos con el estilo base
+            let btnStyle = {...styles.optionBtn};
+
+            // 2. Si estamos respondiendo (idle) y seleccioné este:
+            if (feedbackState === "idle" && isSelected) {
+                btnStyle = {...btnStyle, ...styles.selected};
+            }
+
+            // 3. Si YA respondimos (feedbackState no es idle):
+            if (feedbackState !== "idle") {
+                // A. Si esta opción es la CORRECTA, se pone verde SIEMPRE
+                if (isActualCorrect) {
+                    btnStyle = {...btnStyle, ...styles.correct};
                 }
-            } else if (feedbackState === "incorrect" && isCorrectAnswer) {
-                // SI ME EQUIVOQUÉ, ILUMINA LA CORRECTA EN VERDE (un poco transparente)
-                optionStyle = {...styles.optionBtn, ...styles.correct, opacity: 0.8};
+                // B. Si yo elegí esta opción y era INCORRECTA, se pone roja
+                else if (isSelected && feedbackState === "incorrect") {
+                    btnStyle = {...btnStyle, ...styles.incorrect};
+                }
+                // C. Si no es ni la mía ni la correcta, se queda normal (quizás un poco opaca)
+                else {
+                    btnStyle = {...btnStyle, opacity: 0.5};
+                }
             }
 
             return (
                 <button 
                     key={key} 
                     onClick={() => handleCheck(upperKey)}
-                    style={optionStyle}
+                    style={btnStyle}
                     disabled={feedbackState !== "idle"}
                 >
                     <span style={styles.keyBadge}>{upperKey}</span>
@@ -170,7 +174,6 @@ export default function Exercises() {
             )
         })}
       </div>
-      {/* ------------------------------- */}
 
       {feedbackState !== "idle" && (
         <div style={feedbackState === "correct" ? styles.footerCorrect : styles.footerIncorrect}>
@@ -186,7 +189,6 @@ export default function Exercises() {
             {feedbackState === "incorrect" && (
                <div style={{textAlign: 'left'}}>
                   <div style={{fontWeight: 'bold'}}>
-                      {/* Ya mostramos visualmente cuál es, pero dejamos el texto por si acaso */}
                       Respuesta correcta: {currentExercise.correct_answer}
                   </div>
                   <div style={{fontSize: '0.9rem', marginTop: '5px'}}>{currentExercise.explanation}</div>
@@ -214,10 +216,40 @@ const styles = {
   dot: { width: "12px", height: "12px", borderRadius: "50%" },
   codeBlock: { margin: 0, fontSize: "1.1rem", lineHeight: "1.5", color: "#a29bfe", whiteSpace: "pre-wrap", textAlign: 'left' },
   optionsGrid: { display: "flex", flexDirection: "column", gap: "15px", width: "100%", maxWidth: "500px", marginBottom: "100px" },
-  optionBtn: { padding: "15px 20px", backgroundColor: "#2d2d44", border: "2px solid #2d2d44", borderRadius: "15px", color: "#fff", fontSize: "1rem", cursor: "pointer", display: "flex", alignItems: "center", transition: "0.2s", boxShadow: "0 4px 0 #1e1e2f" },
+  
+  // Estilo base del botón
+  optionBtn: { 
+    padding: "15px 20px", 
+    backgroundColor: "#2d2d44", 
+    border: "2px solid #2d2d44", 
+    borderRadius: "15px", 
+    color: "#fff", 
+    fontSize: "1rem", 
+    cursor: "pointer", 
+    display: "flex", 
+    alignItems: "center", 
+    transition: "0.2s", 
+    boxShadow: "0 4px 0 #1e1e2f",
+    // IMPORTANTE: Esto evita que el navegador ponga el botón gris cuando está disabled
+    opacity: 1 
+  },
+  
   selected: { borderColor: "#a29bfe", backgroundColor: "#3a3a55" },
-  correct: { borderColor: "#58cc02", backgroundColor: "#58cc02", color: "#fff" },
-  incorrect: { borderColor: "#ff4757", backgroundColor: "#ff4757", color: "#fff" },
+  
+  // Estilos fuertes para asegurar que se vean
+  correct: { 
+    borderColor: "#58cc02", 
+    backgroundColor: "#58cc02", 
+    color: "#fff", 
+    boxShadow: "0 4px 0 #46a302" 
+  },
+  incorrect: { 
+    borderColor: "#ff4757", 
+    backgroundColor: "#ff4757", 
+    color: "#fff",
+    boxShadow: "0 4px 0 #d63031"
+  },
+  
   keyBadge: { backgroundColor: "rgba(255,255,255,0.1)", padding: "5px 10px", borderRadius: "8px", marginRight: "15px", fontWeight: "bold", fontSize: "0.8rem" },
   footerCorrect: { position: "fixed", bottom: 0, left: 0, right: 0, backgroundColor: "#13132B", borderTop: "2px solid #58cc02", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", gap: "15px", animation: "slideUp 0.3s" },
   footerIncorrect: { position: "fixed", bottom: 0, left: 0, right: 0, backgroundColor: "#13132B", borderTop: "2px solid #ff4757", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", gap: "15px", animation: "slideUp 0.3s" },
