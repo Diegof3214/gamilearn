@@ -68,7 +68,6 @@ export default function Dashboard() {
         <h2 style={styles.username}>{user.username}</h2>
         <span style={styles.userEmail}>{user.email || "Sin correo registrado"}</span>
         
-        {/* BOTÓN AHORA ACTIVO */}
         <button style={styles.editBtn} onClick={openEditModal}>
           ✏️ Editar Perfil
         </button>
@@ -113,7 +112,7 @@ export default function Dashboard() {
 
       <div style={styles.actionButtons}>
       <button 
-        onClick={() => navigate("/topics")} // <--- CAMBIO AQUÍ (Antes era "/exercises")
+        onClick={() => navigate("/topics")} 
         style={styles.playBtn}
       >
         🚀 Continuar Aprendizaje
@@ -137,7 +136,6 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* --- VENTANA MODAL DE EDICIÓN --- */}
       {isEditing && (
         <div style={styles.modalOverlay}>
           <div style={styles.modalContent}>
@@ -177,13 +175,11 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-      {/* ------------------------------- */}
 
     </div>
   ); 
 }
 
-// Estilos
 const styles = {
   container: {
     minHeight: "100vh",
@@ -194,7 +190,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    position: 'relative' // Necesario para el modal
+    position: 'relative'
   },
   loading: { color: "#fff", marginTop: "50px" },
   
@@ -226,7 +222,7 @@ const styles = {
   // --- ESTILOS DEL MODAL ---
   modalOverlay: {
     position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.8)', // Fondo oscuro transparente
+    backgroundColor: 'rgba(0,0,0,0.8)', 
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     zIndex: 1000
   },
@@ -257,7 +253,7 @@ const styles = {
   teacherBtn: {
     padding: "15px",
     borderRadius: "12px",
-    border: "2px dashed #a29bfe", // Borde discontinuo para diferenciarlo
+    border: "2px dashed #a29bfe", 
     backgroundColor: "transparent",
     color: "#a29bfe",
     fontSize: "1.1rem",

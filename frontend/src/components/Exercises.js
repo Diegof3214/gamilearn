@@ -137,25 +137,19 @@ export default function Exercises() {
             const isSelected = selectedOption === upperKey;
             const isActualCorrect = currentExercise.correct_answer === upperKey;
             
-            // 1. Estilo base
             let btnStyle = {...styles.optionBtn};
 
-            // 2. Estado "Seleccionado" (mientras piensas)
             if (feedbackState === "idle" && isSelected) {
                 btnStyle = {...btnStyle, ...styles.selected};
             }
 
-            // 3. Estado "Resultado" (ya respondiste)
             if (feedbackState !== "idle") {
-                // A. La correcta SIEMPRE se ilumina en verde
                 if (isActualCorrect) {
                     btnStyle = {...btnStyle, ...styles.correct};
                 }
-                // B. Si te equivocaste, tu elección se pone roja
                 else if (isSelected && feedbackState === "incorrect") {
                     btnStyle = {...btnStyle, ...styles.incorrect};
                 }
-                // C. Las demás se opacan para no distraer
                 else {
                     btnStyle = {...btnStyle, opacity: 0.5};
                 }
@@ -217,7 +211,6 @@ const styles = {
   codeBlock: { margin: 0, fontSize: "1.1rem", lineHeight: "1.5", color: "#a29bfe", whiteSpace: "pre-wrap", textAlign: 'left' },
   optionsGrid: { display: "flex", flexDirection: "column", gap: "15px", width: "100%", maxWidth: "500px", marginBottom: "100px" },
   
-  // Estilo base del botón
   optionBtn: { 
     padding: "15px 20px", 
     backgroundColor: "#2d2d44", 
@@ -230,13 +223,11 @@ const styles = {
     alignItems: "center", 
     transition: "0.2s", 
     boxShadow: "0 4px 0 #1e1e2f",
-    // IMPORTANTE: Esto evita que el navegador ponga el botón gris cuando está disabled
     opacity: 1 
   },
   
   selected: { borderColor: "#a29bfe", backgroundColor: "#3a3a55" },
   
-  // Estilos fuertes para asegurar que se vean
   correct: { 
     borderColor: "#58cc02", 
     backgroundColor: "#58cc02", 

@@ -9,7 +9,7 @@ export default function TeacherDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Intentamos cargar la lista. Si falla (403 Forbidden), es que no es profe.
+    // Intentamos cargar la lista. Si falla (403 Forbidden), es que no es un profesor.
     api.get("users/students/")
       .then((res) => {
         setStudents(res.data);

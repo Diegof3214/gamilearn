@@ -12,7 +12,6 @@ import TopicMenu from './components/TopicMenu';
 function AppRoutes() {
   const navigate = useNavigate();
 
-  // Función para manejar la redirección tras el login
   const handleLogin = () => {
     navigate("/dashboard");
   };
