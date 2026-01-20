@@ -13,7 +13,6 @@ export default function TopicMenu() {
   }, []);
 
   const handleTopicClick = (topicId) => {
-    // Navegamos a los ejercicios, pero pasando el ID del tema
     navigate(`/exercises?topic=${topicId}`);
   };
 
@@ -49,7 +48,6 @@ export default function TopicMenu() {
   );
 }
 
-// Estilos Dark Mode
 const styles = {
   container: {
     minHeight: "100vh",

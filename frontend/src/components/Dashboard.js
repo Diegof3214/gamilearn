@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
-  const [isEditing, setIsEditing] = useState(false); // Controla si se ve el modal
-  const [editForm, setEditForm] = useState({ username: "", email: "" }); // Datos del formulario
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({ username: "", email: "" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,9 +24,7 @@ export default function Dashboard() {
     navigate("/");
   };
 
-  // --- LÓGICA DE EDICIÓN ---
   const openEditModal = () => {
-    // Pre-llenar el formulario con los datos actuales
     setEditForm({ username: user.username, email: user.email });
     setIsEditing(true);
   };
@@ -36,15 +34,14 @@ export default function Dashboard() {
     try {
       // Enviamos PATCH para actualizar solo lo que cambió
       const res = await api.patch("users/me/", editForm);
-      setUser(res.data); // Actualizamos la vista con los datos nuevos
-      setIsEditing(false); // Cerramos modal
+      setUser(res.data); 
+      setIsEditing(false);
       alert("✅ Perfil actualizado correctamente");
     } catch (error) {
       console.error(error);
       alert("Error al actualizar. Quizás el nombre ya existe.");
     }
   };
-  // -------------------------
 
   if (!user) return <div style={styles.loading}>Cargando perfil...</div>;
 

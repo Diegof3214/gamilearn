@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../services/api";
-import { Link } from "react-router-dom"; // Importar Link
+import { Link } from "react-router-dom";
 
 export default function LoginForm({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -53,7 +53,6 @@ export default function LoginForm({ onLogin }) {
   );
 }
 
-// Reutilizamos los estilos del registro para consistencia
 const styles = {
   container: {
     minHeight: "100vh",
@@ -88,7 +87,7 @@ const styles = {
     padding: "15px",
     borderRadius: "12px",
     border: "none",
-    backgroundColor: "#58cc02", // Verde para login
+    backgroundColor: "#58cc02",
     color: "#fff",
     fontSize: "1.1rem",
     fontWeight: "bold",

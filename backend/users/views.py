@@ -25,11 +25,9 @@ class LeaderboardView(generics.ListAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        # Ordenar por puntos descendente (-points) y traer solo los top 10
         return User.objects.order_by('-points')[:10]
     
 class StudentListView(generics.ListAPIView):
-    # Solo permitimos entrar a usuarios con permiso de "Staff" (Profesores/Admins)
     permission_classes = [IsAdminUser] 
     serializer_class = UserSerializer
-    queryset = User.objects.filter(is_staff=False) # Traemos solo alumnos, no otros profes
+    queryset = User.objects.filter(is_staff=False)

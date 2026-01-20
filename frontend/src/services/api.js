@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// 👇 PEGA AQUÍ TU URL DE RENDER (Asegúrate de que termine en /api/)
 const API_URL = "https://gamilearn-backend.onrender.com/api/"; 
 
 const api = axios.create({

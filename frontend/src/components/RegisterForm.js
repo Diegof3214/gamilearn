@@ -12,7 +12,7 @@ export default function RegisterForm() {
     try {
       await api.post("users/register/", formData);
       alert("¡Cuenta creada! Ahora inicia sesión.");
-      navigate("/"); // Redirigir al Login
+      navigate("/");
     } catch (err) {
       console.error(err);
       setError("Error al registrar. El usuario quizás ya existe.");
@@ -62,7 +62,6 @@ export default function RegisterForm() {
   );
 }
 
-// Estilos Dark Mode / Mimo
 const styles = {
   container: {
     minHeight: "100vh",
