@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import TeacherDashboard from './components/TeacherDashboard';
 
 import LoginForm from './components/LoginForm';
@@ -33,6 +34,7 @@ export default function App() {
   return (
     <Router>
       <AppRoutes />
+      <Analytics />
     </Router>
   );
 }
